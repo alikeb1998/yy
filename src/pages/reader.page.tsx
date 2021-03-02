@@ -61,9 +61,8 @@ interface ContentProps {
 }
 
 const Content = styled.div<ContentProps>`
-  margin: 10px 0;
+  margin: 10px auto;
   width: 800px;
-  margin: auto;
   padding: 80px 20px 160px 20px;
   background: ${({background}) => background};
 
@@ -251,7 +250,7 @@ export const Reader = () => {
 						</ContentContainer>
 				}
 			</Container>
-			<ChapterController />
+			{/*<ChapterController />*/}
 		</Page>
 	);
 };
