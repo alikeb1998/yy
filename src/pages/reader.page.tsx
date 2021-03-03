@@ -17,8 +17,8 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  width: 100vw;
   background: ${({background}) => background};
+  position: relative;
 `;
 
 const SelectStyleContainer = styled.div`
@@ -47,11 +47,18 @@ const ChaptersMenuContainer = styled.div`
 `;
 
 interface ContentContainerProps {
-	background: Color
+	background: Color;
 }
 
 const ContentContainer = styled.div<ContentContainerProps>`
   background: ${({background}) => background};
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 80px;
+  left: 0;
+  overflow-y: scroll;
+  overflow-scrolling: touch;
 `;
 
 interface ContentProps {
@@ -239,9 +246,7 @@ export const Reader = () => {
 					isLoading ?
 						<></> :
 						<ContentContainer background={background}>
-							<Content color={foreground} fontSize={fontSize} style={{
-								minHeight: height - 80,
-							}} background={background}>
+							<Content color={foreground} fontSize={fontSize} background={background}>
 								<Popover render={renderTextSelection(shadow, secondaryBackground, onHighlightClick())} />
 								{ReactHtmlParser(html, {
 									transform: transformImage,
@@ -250,7 +255,7 @@ export const Reader = () => {
 						</ContentContainer>
 				}
 			</Container>
-			{/*<ChapterController />*/}
+			<ChapterController />
 		</Page>
 	);
 };
