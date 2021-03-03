@@ -18,8 +18,8 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   background: ${({background}) => background};
-  position: fixed;
-	overflow: hidden;
+	width: 100vw;
+	height: 100vh;
 `;
 
 const SelectStyleContainer = styled.div`
