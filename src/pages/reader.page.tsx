@@ -18,8 +18,6 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   background: ${({background}) => background};
-	width: 100vw;
-	height: 100vh;
 `;
 
 const SelectStyleContainer = styled.div`
@@ -56,10 +54,6 @@ interface ContentContainerProps {
 
 const ContentContainer = styled.div<ContentContainerProps>`
   background: ${({background}) => background};
-  position: fixed;
-	top: 80px;
-	right: 20px;
-	left: 20px;
   height: ${({height}) => height}px;
   background: ${({background}) => background};
   transition: all 336ms;
@@ -69,7 +63,8 @@ const ContentContainer = styled.div<ContentContainerProps>`
 	overflow-scrolling: touch;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	height: ${({height}) => height - 160}px;
+	padding: 0 20px 80px 20px;
+	margin: 80px 0;
 `;
 
 interface TextSelectionPopoverProps {
