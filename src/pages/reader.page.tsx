@@ -3,7 +3,7 @@ import {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {useTextSelection} from 'use-text-selection';
-import ReactHtmlParser, {Transform} from 'react-html-parser';
+import ReactHtmlParser, {convertNodeToElement, Transform} from 'react-html-parser';
 import {Popover} from 'react-text-selection-popover';
 import styled, {css} from 'styled-components';
 
@@ -18,7 +18,7 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   background: ${({background}) => background};
-  position: relative;
+  position: fixed;
 `;
 
 const SelectStyleContainer = styled.div`
@@ -48,39 +48,27 @@ const ChaptersMenuContainer = styled.div`
 
 interface ContentContainerProps {
 	background: Color;
+	height: number;
+	color: Color;
+	fontSize: number;
 }
 
 const ContentContainer = styled.div<ContentContainerProps>`
   background: ${({background}) => background};
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 80px;
-  left: 0;
-  overflow-y: scroll;
-  overflow-scrolling: touch;
-`;
-
-interface ContentProps {
-	color: Color;
-	fontSize: number;
-	background: Color;
-}
-
-const Content = styled.div<ContentProps>`
-  margin: 10px auto;
-  width: 800px;
-  padding: 80px 20px 160px 20px;
+	top: 80px;
+	right: 20px;
+	bottom: 80px;
+	left: 20px;
+  height: ${({height}) => height}px;
   background: ${({background}) => background};
-
-  & html > body * {
-    color: ${({color}) => color} !important;
-    font-size: ${({fontSize}) => 1 + fontSize / 10}em !important;
-  }
-
-  @media only screen and (max-width: 1000px) {
-    width: 100%;
-  }
+  transition: all 336ms;
+  z-index: 1;
+  color: ${({color}) => color} !important;
+  font-size: ${({fontSize}) => 1 + fontSize / 10}em !important;
+	overflow-scrolling: touch;
+	overflow-y: scroll;
+	overflow-x: hidden;
 `;
 
 interface TextSelectionPopoverProps {
@@ -219,8 +207,22 @@ export const Reader = () => {
 		});
 	});
 
-	const transformImage: Transform = (node) => {
-		if (node.name === 'img') return <></>;
+	const transform: Transform = (node, index) => {
+		const removeNodes = [
+			'img',
+			'header',
+		];
+		const turnNodes = [
+			'html',
+			'body',
+		];
+
+		if (removeNodes.includes(node.name)) return null;
+		if (turnNodes.includes(node.name)) {
+			node.name = 'div';
+			return convertNodeToElement(node, index, transform);
+		}
+		;
 	};
 
 	const onHighlightClick = () => (className: string, range: Range) => {
@@ -245,13 +247,11 @@ export const Reader = () => {
 				{
 					isLoading ?
 						<></> :
-						<ContentContainer background={background}>
-							<Content color={foreground} fontSize={fontSize} background={background}>
-								<Popover render={renderTextSelection(shadow, secondaryBackground, onHighlightClick())} />
-								{ReactHtmlParser(html, {
-									transform: transformImage,
-								})}
-							</Content>
+						<ContentContainer background={background} height={height} color={foreground} fontSize={fontSize}>
+							<Popover render={renderTextSelection(shadow, secondaryBackground, onHighlightClick())} />
+							{ReactHtmlParser(html, {
+								transform: transform,
+							})}
 						</ContentContainer>
 				}
 			</Container>
