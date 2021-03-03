@@ -243,15 +243,17 @@ export const Reader = () => {
 			<ChaptersMenuContainer>
 				<ChaptersMenu />
 			</ChaptersMenuContainer>
+			<Popover render={renderTextSelection(shadow, secondaryBackground, onHighlightClick())} />
 			<Container background={background}>
 				{
 					isLoading ?
 						<></> :
 						<ContentContainer background={background} height={height} color={foreground} fontSize={fontSize}>
-							<Popover render={renderTextSelection(shadow, secondaryBackground, onHighlightClick())} />
-							{ReactHtmlParser(html, {
-								transform: transform,
-							})}
+							<div>
+								{ReactHtmlParser(html, {
+									transform: transform,
+								})}
+							</div>
 						</ContentContainer>
 				}
 			</Container>
