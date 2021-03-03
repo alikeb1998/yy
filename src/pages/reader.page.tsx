@@ -59,6 +59,7 @@ const ContentContainer = styled.div<ContentContainerProps>`
   position: fixed;
 	top: 80px;
 	right: 20px;
+	bottom: 80px;
 	left: 20px;
   height: ${({height}) => height}px;
   background: ${({background}) => background};
@@ -69,7 +70,6 @@ const ContentContainer = styled.div<ContentContainerProps>`
 	overflow-scrolling: touch;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	height: ${({height}) => height - 160}px;
 `;
 
 interface TextSelectionPopoverProps {
